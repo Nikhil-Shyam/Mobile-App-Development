@@ -5,13 +5,11 @@ public class PolynomialCalculator{
 	String inp;
 
 	PolynomialCalculator(){
-		// inp = "-2x^3-4x^2-12x^3+x-8x^2+5x-3-5";
-		// inp = "-x^2+32x-3*4x-12x^2+3";
+		inp = "-2x^3-4x^2-12x^3+x-8x^2+5x-3-5";
+		// inp = "3x^2+3x^2";
 		// inp = "2x^2-x^2";
 
 		System.out.println(inp + "\n");
-
-		boolean startNeg = false;
 
 		// breaking inp into terms (add/sub) and adding to arraylist
 		ArrayList<String> a = new ArrayList<String>();
@@ -67,9 +65,6 @@ public class PolynomialCalculator{
 				sign.add("+");
 			else if (inp.substring(i, i+1).equals("-"))
 				sign.add("-");
-		}
-		if (inp.indexOf("-") == 0){
-			startNeg = true;
 		}
 
 		// putting back into a string for addition/subtraction
@@ -165,7 +160,6 @@ public class PolynomialCalculator{
 					addFin.add("+" + num);
 			}
 		}
-		System.out.println(addFin + "\n");
 
 		String output = "";
 		for(int i = 0; i < addFin.size(); i++)
