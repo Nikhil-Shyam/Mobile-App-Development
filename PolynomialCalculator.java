@@ -1,124 +1,187 @@
 import java.util.StringTokenizer;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PolynomialCalculator{
-	String inp;
+	String input;
+	ArrayList<String> addSubTerms = new ArrayList<String>();
+	ArrayList<String> multiplicationOutput = new ArrayList<String>();
+	ArrayList<String> signs = new ArrayList<String>();
+	int signCounter = 0;
+	String addSubInput = "";
+	boolean once = true;
+	ArrayList<String> addAndSub = new ArrayList<String>();
+	ArrayList<Integer> descendingVariableOrder = new ArrayList<Integer>();
+	ArrayList<String> outputArray = new ArrayList<String>();
 
 	PolynomialCalculator(){
-		inp = "-2x^3-4x^2-12x^3+x-8x^2+5x-3-5";
-		// inp = "3x^2+3x^2";
-		// inp = "2x^2-x^2";
+		input = "2x^3-4x^2-12x^3+x-8x^2+5x-3-5*3";
+		// input = "-x^2+32x-3*4x-12x^2-1";
+		// input = "3x+2x^2";
+		// input = "8+8x+8x^2";
 
-		System.out.println(inp + "\n");
+
+		System.out.println(input + "\n");
+
 
 		// breaking inp into terms (add/sub) and adding to arraylist
-		ArrayList<String> a = new ArrayList<String>();
-		StringTokenizer st1 = new StringTokenizer(inp, "+-");
+		StringTokenizer st1 = new StringTokenizer(input, "+-");
 		while (st1.hasMoreTokens()){
-			a.add(st1.nextToken());
+			addSubTerms.add(st1.nextToken());
 		}
 
-		ArrayList<String> ans = new ArrayList<String>();
-		for (int i = 0; i < a.size(); i++){
+		multiply();
+
+		// determining signs
+		determineSigns();
+
+		// putting back into a string for addition/subtraction
+		addSubString();
+
+		// breaking up addition and subtraction
+		addSubTerms = new ArrayList<String>();
+		StringTokenizer st2 = new StringTokenizer(addSubInput, "+-");
+		signCounter = 0;
+
+		while(st2.hasMoreTokens()){
+			addSubTerms.add(st2.nextToken());
+		}
+
+		addSubTermSigns();
+
+		// addition and subtraction
+		additionAndSubtraction();
+
+		descendingOrder();
+
+		String output = "";
+		for(int i = 0; i < outputArray.size(); i++)
+			output += outputArray.get(i);
+
+		if (output.charAt(0) == '+')
+			output = output.substring(1);
+
+		System.out.println(output);
+	}
+
+	public static void main(String[] args){
+		new PolynomialCalculator();
+	}
+
+	public void multiply(){
+		for (int i = 0; i < addSubTerms.size(); i++){
 			// breaking up multiplication for each term and adding to arraylist
-			ArrayList<String> m = new ArrayList<String>();
-			StringTokenizer st2 = new StringTokenizer(a.get(i), "*");
-			int cons = 1;
-			int varCount = 0;
+			ArrayList<String> multiplicationTerms = new ArrayList<String>();
+			StringTokenizer st2 = new StringTokenizer(addSubTerms.get(i), "*");
+			int constants = 1;
+			int variableCounter = 0;
 
 			while(st2.hasMoreTokens()){
-				m.add(st2.nextToken());
+				multiplicationTerms.add(st2.nextToken());
 			}
 
-			for (int j = 0; j < m.size(); j++){
-				String temp = m.get(j);
+			for (int j = 0; j < multiplicationTerms.size(); j++){
+				String temp = multiplicationTerms.get(j);
 
 				//multiplying constants together
 				if (temp.contains("x")){
 					try{
-						cons *= Integer.parseInt(temp.substring(0, temp.indexOf("x")));
+						constants *= Integer.parseInt(temp.substring(0, temp.indexOf("x")));
 					}catch (NumberFormatException e){
-						cons*=1;
+						constants*=1;
 					}
 				}else
-					cons *= Integer.parseInt(temp);
+					constants *= Integer.parseInt(temp);
 
 				//multiplying variables together
 				if (temp.contains("^"))
-					varCount += Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+					variableCounter += Integer.parseInt(temp.substring(temp.indexOf("^")+1));
 				else if (temp.contains("x"))
-					varCount++;
+					variableCounter++;
 			}
 
-			if (varCount != 0 && varCount != 1)
-				ans.add(cons + "x^" + varCount);
-			else if(varCount == 1)
-				ans.add(cons + "x");
+			if (variableCounter != 0 && variableCounter != 1)
+				multiplicationOutput.add(constants + "x^" + variableCounter);
+			else if(variableCounter == 1)
+				multiplicationOutput.add(constants + "x");
 			else
-				ans.add(Integer.toString(cons));
+				multiplicationOutput.add(Integer.toString(constants));
 		}
+	}
 
-		// determining signs
-		ArrayList<String> sign = new ArrayList<String>();
-		for (int i = 0; i < inp.length(); i++){
-			if (inp.substring(i, i+1).equals("+"))
-				sign.add("+");
-			else if (inp.substring(i, i+1).equals("-"))
-				sign.add("-");
+	public void determineSigns(){
+		for (int i = 0; i < input.length(); i++){
+			if (input.charAt(i) == '+')
+				signs.add("+");
+			else if (input.charAt(i) == '-')
+				signs.add("-");
 		}
+	}
 
-		// putting back into a string for addition/subtraction
-		int signCount = 0;
-		String add = "";
-		for (int i = 0; i < ans.size(); i++){
-			if (signCount < sign.size())
-				add += sign.get(signCount);
-			add += ans.get(i);
-			signCount++;
+	public void addSubString(){
+		for (int i = 0; i < multiplicationOutput.size(); i++){
+			if (input.charAt(0) == '-'){
+				if (signCounter < signs.size()){
+					addSubInput += signs.get(signCounter);
+					addSubInput += multiplicationOutput.get(i);
+				}
+			}else{
+				addSubInput += multiplicationOutput.get(i);
+				if (signCounter < signs.size())
+					addSubInput += signs.get(signCounter);
+			}
+			signCounter++;
 		}
+	}
 
-
-		// breaking up addition and subtraction
-		ArrayList<String> b = new ArrayList<String>();
-		StringTokenizer st2 = new StringTokenizer(add, "+-");
-		while (st2.hasMoreTokens()){
-			String temp = "";
-			for (int i = 0; i < sign.size(); i++){
-				if (sign.get(i).equals("-"))
-					temp = "-" + st2.nextToken();
-				else
-					temp = st2.nextToken();
-				b.add(temp);
+	public void addSubTermSigns(){
+		if (input.charAt(0) == '-'){
+			for (int i = 0; i < addSubTerms.size(); i++){
+				if (signCounter < signs.size()){
+					if (signs.get(signCounter).equals("-")){
+						addSubTerms.set(i, "-" + addSubTerms.get(i));
+					}
+				}
+				signCounter++;
+			}
+		}else{
+			for (int i = 1; i < addSubTerms.size(); i++){
+				if (signCounter < signs.size()){
+					if (signs.get(signCounter).equals("-")){
+						addSubTerms.set(i, "-" + addSubTerms.get(i));
+					}
+				}
+				signCounter++;
 			}
 		}
+	}
 
-		// addition and subtraction
-		ArrayList<String> addFin = new ArrayList<String>();
-		for (int i = 0; i < b.size(); i++){
-			int highVar = 0;
-			String temp = b.get(i);
+	public void additionAndSubtraction(){
+		for (int i = 0; i < addSubTerms.size(); i++){
+			int variable = 0;
+			String temp = addSubTerms.get(i);
 			if (temp.contains("^"))
-				highVar = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+				variable = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
 			else if (temp.contains("x"))
-				highVar = 1;
+				variable = 1;
 			else
-				highVar = 0;
+				variable = 0;
 
-			int tempSize = b.size();
-			for (int j = b.size()-1; j > i; j--){
-				int highVar2 = 0;
-				String temp2 = b.get(j);
+			int tempSize = addSubTerms.size();
+			for (int j = addSubTerms.size()-1; j > i; j--){
+				int variable2 = 0;
+				String temp2 = addSubTerms.get(j);
 				if (temp2.contains("^"))
-					highVar2 = Integer.parseInt(temp2.substring(temp2.indexOf("^")+1));
+					variable2 = Integer.parseInt(temp2.substring(temp2.indexOf("^")+1));
 				else if (temp2.contains("x"))
-					highVar2 = 1;
+					variable2 = 1;
 				else
-					highVar2 = 0;
+					variable2 = 0;
 
-				if (highVar == highVar2){
+				if (variable == variable2){
 					int cons = 0;
 					int cons2 = 0;
-					if (highVar >= 1){
+					if (variable >= 1){
 						cons = Integer.parseInt(temp.substring(0, temp.indexOf("x")));
 						cons2 = Integer.parseInt(temp2.substring(0, temp2.indexOf("x")));
 					}else{
@@ -126,49 +189,75 @@ public class PolynomialCalculator{
 						cons2 = Integer.parseInt(temp2);
 					}
 
-					if (highVar > 1){
+					if (variable > 1){
 						if (cons+cons2 > 0)
-							addFin.add((cons+cons2)+"x^"+highVar);
+							addAndSub.add((cons+cons2)+"x^"+variable);
 						else if (cons + cons2 < 0)
-							addFin.add((cons+cons2)+"x^"+highVar);
+							addAndSub.add((cons+cons2)+"x^"+variable);
 					}
-					else if (highVar == 1){
+					else if (variable == 1){
 						if (cons+cons2 > 0)
-							addFin.add("+" + (cons+cons2)+"x");
+							addAndSub.add("+" + (cons+cons2)+"x");
 						else if (cons + cons2 < 0)
-							addFin.add((cons+cons2)+"x");
+							addAndSub.add((cons+cons2)+"x");
 					}
-					else if (highVar == 0){
+					else if (variable == 0){
 						if (cons+cons2 > 0)
-							addFin.add("+" + (cons+cons2));
+							addAndSub.add("+" + (cons+cons2));
 						else if (cons + cons2 < 0)
-							addFin.add(Integer.toString(cons+cons2));
+							addAndSub.add(Integer.toString(cons+cons2));
 					}
-					b.remove(j);
+					addSubTerms.remove(j);
 				}
 			}
-			if (tempSize == b.size()){
-				int num = 0;
-				if (b.get(i).contains("x"))
-					num = Integer.parseInt(b.get(i).substring(0, b.get(i).indexOf("x")));
+			if (tempSize == addSubTerms.size()){
+				if (temp.charAt(0) == '-')
+					addAndSub.add(addSubTerms.get(i));
 				else
-					num = Integer.parseInt(b.get(i));
-
-				if (num < 0)
-					addFin.add(b.get(i));
-				else if (num > 0)
-					addFin.add("+" + num);
+					addAndSub.add("+" + addSubTerms.get(i));
 			}
 		}
 
-		String output = "";
-		for(int i = 0; i < addFin.size(); i++)
-			output += addFin.get(i);
-
-		System.out.println(output);
+		for (int i = 0; i < addAndSub.size(); i++){
+			String temp = addAndSub.get(i);
+			if (temp.contains("x")){
+				if (temp.substring(0, temp.indexOf("x")).equals("1"))
+					addAndSub.set(i, temp.substring(temp.indexOf("x")));
+				if (temp.substring(0, temp.indexOf("x")).equals("-1"))
+					addAndSub.set(i, "-" + temp.substring(temp.indexOf("x")));
+			}
+		}
 	}
 
-	public static void main(String[] args){
-		new PolynomialCalculator();
+	public void descendingOrder(){
+		for (int i = 0; i < addAndSub.size(); i++){
+			String temp = addAndSub.get(i);
+			if (temp.contains("^")){
+				int tempI = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+				descendingVariableOrder.add(tempI);
+			}else if (temp.contains("x")){
+				descendingVariableOrder.add(1);
+			}else{
+				descendingVariableOrder.add(0);
+			}
+		}
+		Collections.sort(descendingVariableOrder, Collections.reverseOrder());
+
+
+		for(int i = 0; i < descendingVariableOrder.size(); i++){
+			int tempD = descendingVariableOrder.get(i);
+			for (int j = 0; j < addAndSub.size(); j++){
+				String temp = addAndSub.get(j);
+				int tempF = -1;
+				if(temp.contains("^"))
+					tempF = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+				else if (temp.contains("x"))
+					tempF = 1;
+				else
+					tempF = 0;
+				if (tempF == tempD)
+					outputArray.add(temp);
+			}
+		}
 	}
 }
