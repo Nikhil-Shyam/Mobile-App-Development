@@ -21,7 +21,7 @@ public class PolynomialCalculator{
 		// input = "3x+2x^2";
 		// input = "8x-8x+8x^2-2x*4x+3-3";
 		// input = "9*3x^2+6x^7-3x^2*6x^4+12x^8-6x^2+3*8-6+5";
-		input = "8x^2-3x^2+4x^2-8*3x^2";
+		// input = "8x^2-3x^2+4x^2-8*3x^2";
 
 		System.out.println(input + "\n");
 
@@ -271,8 +271,13 @@ public class PolynomialCalculator{
 	}
 
 	public void checkForErrors(){
+		char[] nums = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+
 		char last = input.charAt(input.length()-1);
 		if(last == '+' || last == '*' || last == '^' || last == '-')
+			error = true;
+
+		if(input.length() == 0)
 			error = true;
 
 		for (int i = 0; i < input.length()-1; i++){
@@ -298,6 +303,12 @@ public class PolynomialCalculator{
 				char first = input.charAt(i);
 				if(first == '+' || first == '*' || first == '^')
 					error = true;
+			}
+			if (temp == 'x'){
+				for (int j = 0; j < nums.length; j++){
+					if (input.charAt(i+1) == nums[j])
+						error = true;
+				}
 			}
 		}
 	}
