@@ -5,6 +5,10 @@ import java.util.Collections;
 public class PolynomialCalculator{
 	String input;
 	boolean error = false;
+	ArrayList<String> exponents = new ArrayList<String>();
+	ArrayList<String> eSigns = new ArrayList<String>();
+	int eSignCounter = 0;
+	String multiplyInput = "";
 	ArrayList<String> addSubTerms = new ArrayList<String>();
 	ArrayList<String> multiplicationOutput = new ArrayList<String>();
 	ArrayList<String> signs = new ArrayList<String>();
@@ -16,7 +20,7 @@ public class PolynomialCalculator{
 	String output = "";
 
 	PolynomialCalculator(){
-		// input = "2x^3-4x^2-12x^3+x-8x^2+5x-3-5*3";
+		input = "2^3";
 		// input = "x-x^2+32x-3*4x-12x^2-1";
 		// input = "3x+2x^2";
 		// input = "8x-8x+8x^2-2x*4x+3-3";
@@ -31,7 +35,14 @@ public class PolynomialCalculator{
 			System.out.println("Error");
 		}else{
 			// breaking inp into terms (add/sub) and adding to arraylist
-			StringTokenizer st1 = new StringTokenizer(input, "+-");
+			StringTokenizer st3 = new StringTokenizer(input, "+-*");
+			while (st3.hasMoreTokens()){
+				exponents.add(st3.nextToken());
+			}
+
+			exponents();
+
+			StringTokenizer st1 = new StringTokenizer(multiplyInput, "+-");
 			while (st1.hasMoreTokens()){
 				addSubTerms.add(st1.nextToken());
 			}
@@ -39,7 +50,7 @@ public class PolynomialCalculator{
 			multiply();
 
 			// determining signs
-			determineSigns();
+			determineAddSubSigns();
 
 			// putting back into a string for addition/subtraction
 			addSubString();
@@ -74,6 +85,40 @@ public class PolynomialCalculator{
 
 	public static void main(String[] args){
 		new PolynomialCalculator();
+	}
+
+	public void exponents(){
+		for (int i = 0; i < exponents.size(); i++){
+			String temp = exponents.get(i);
+			if (temp.contains("^") && !temp.contains("x")){
+				int base = Integer.parseInt(temp.substring(0, temp.indexOf("^")));
+				int power = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+				exponents.set(i, Integer.toString((int) Math.pow(base, power)));
+			}
+		}
+
+		for (int i = 0; i < input.length(); i++){
+			if (input.charAt(i) == '+')
+				eSigns.add("+");
+			else if (input.charAt(i) == '-')
+				eSigns.add("-");
+			else if (input.charAt(i) == '*')
+				eSigns.add("*");
+		}
+
+		for (int i = 0; i < exponents.size(); i++){
+			if (input.charAt(0) == '-'){
+				if (eSignCounter < eSigns.size()){
+					multiplyInput += eSigns.get(eSignCounter);
+					multiplyInput += exponents.get(i);
+				}
+			}else{
+				multiplyInput += exponents.get(i);
+				if (eSignCounter < eSigns.size())
+					multiplyInput += eSigns.get(eSignCounter);
+			}
+			eSignCounter++;
+		}
 	}
 
 	public void multiply(){
@@ -117,7 +162,7 @@ public class PolynomialCalculator{
 		}
 	}
 
-	public void determineSigns(){
+	public void determineAddSubSigns(){
 		for (int i = 0; i < input.length(); i++){
 			if (input.charAt(i) == '+')
 				signs.add("+");
