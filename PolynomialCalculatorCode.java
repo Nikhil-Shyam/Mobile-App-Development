@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
     public class Buttons implements View.OnClickListener{
         String input;
         boolean error;
+        ArrayList<String> exponents;
+        ArrayList<String> eSigns;
+        int eSignCounter;
+        String multiplyInput;
         ArrayList<String> addSubTerms;
         ArrayList<String> multiplicationOutput;
         ArrayList<String> signs;
@@ -137,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
         public void calculate(){
             input = inp.getText().toString();
             error = false;
+            exponents = new ArrayList<String>();
+            eSigns = new ArrayList<String>();
+            eSignCounter = 0;
+            multiplyInput = "";
             addSubTerms = new ArrayList<String>();
             multiplicationOutput = new ArrayList<String>();
             signs = new ArrayList<String>();
@@ -152,8 +160,16 @@ public class MainActivity extends AppCompatActivity {
             if (error){
                 inp.setText("ERROR");
             }else{
+                // breaking inp into terms (add/sub/multi) and adding to arraylist
+                StringTokenizer st3 = new StringTokenizer(input, "+-*");
+                while (st3.hasMoreTokens()){
+                    exponents.add(st3.nextToken());
+                }
+
+                exponents();
+
                 // breaking inp into terms (add/sub) and adding to arraylist
-                StringTokenizer st1 = new StringTokenizer(input, "+-");
+                StringTokenizer st1 = new StringTokenizer(multiplyInput, "+-");
                 while (st1.hasMoreTokens()){
                     addSubTerms.add(st1.nextToken());
                 }
@@ -161,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 multiply();
 
                 // determining signs
-                determineSigns();
+                determineAddSubSigns();
 
                 // putting back into a string for addition/subtraction
                 addSubString();
@@ -194,6 +210,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        public void exponents(){
+            for (int i = 0; i < exponents.size(); i++){
+                String temp = exponents.get(i);
+                if (temp.contains("^") && !temp.contains("x")){
+                    int base = Integer.parseInt(temp.substring(0, temp.indexOf("^")));
+                    int power = Integer.parseInt(temp.substring(temp.indexOf("^")+1));
+                    exponents.set(i, Integer.toString((int) Math.pow(base, power)));
+                }
+            }
+
+            for (int i = 0; i < input.length(); i++){
+                if (input.charAt(i) == '+')
+                    eSigns.add("+");
+                else if (input.charAt(i) == '-')
+                    eSigns.add("-");
+                else if (input.charAt(i) == '*')
+                    eSigns.add("*");
+            }
+
+            for (int i = 0; i < exponents.size(); i++){
+                if (input.charAt(0) == '-'){
+                    if (eSignCounter < eSigns.size()){
+                        multiplyInput += eSigns.get(eSignCounter);
+                        multiplyInput += exponents.get(i);
+                    }
+                }else{
+                    multiplyInput += exponents.get(i);
+                    if (eSignCounter < eSigns.size())
+                        multiplyInput += eSigns.get(eSignCounter);
+                }
+                eSignCounter++;
+            }
+        }
         public void multiply(){
             for (int i = 0; i < addSubTerms.size(); i++){
                 // breaking up multiplication for each term and adding to arraylist
@@ -234,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                     multiplicationOutput.add(Integer.toString(constants));
             }
         }
-        public void determineSigns(){
+        public void determineAddSubSigns(){
             for (int i = 0; i < input.length(); i++){
                 if (input.charAt(i) == '+')
                     signs.add("+");
