@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     // 570 dp down
     Button zero, one, two, three, four, five, six, seven, eight, nine, plus, multiplication, minus, clear, variable, equal, carrot, delete;
     TextView inp;
-    public boolean calculated = false;
+    boolean calculated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
