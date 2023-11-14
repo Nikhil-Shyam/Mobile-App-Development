@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     // 570 dp down
     Button zero, one, two, three, four, five, six, seven, eight, nine, plus, multiplication, minus, clear, variable, equal, carrot, delete;
     TextView inp;
+    public boolean calculated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
         String output;
 
         public void addText(Button button){
-            inp.append(button.getText());
+            if (calculated) {
+                inp.setText("");
+                calculated = false;
+            }
+            if (!inp.getText().toString().equals("ERROR"))
+                inp.append(button.getText());
         }
         @Override
         public void onClick(View view) {
@@ -112,12 +118,20 @@ public class MainActivity extends AppCompatActivity {
                 addText(carrot);
             else if (view.getId() == R.id.variable)
                 addText(variable);
-            else if (view.getId() == R.id.clear)
+            else if (view.getId() == R.id.clear) {
                 inp.setText("");
-            else if (view.getId() == R.id.delete)
-                inp.setText(inp.getText().toString().substring(0, inp.getText().length()-1));
-            else if (view.getId() == R.id.equal)
+            }
+            else if (view.getId() == R.id.delete) {
+                if (inp.length() == 0) {
+                    inp.setText("ERROR");
+                }
+                if (!inp.getText().toString().equals("ERROR"))
+                    inp.setText(inp.getText().toString().substring(0, inp.getText().length() - 1));
+            }
+            else if (view.getId() == R.id.equal) {
                 calculate();
+                calculated = true;
+            }
         }
 
         public void calculate(){
@@ -132,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             descendingVariableOrder = new ArrayList<Integer>();
             outputArray = new ArrayList<String>();
             output = "";
-            
+
             checkForErrors();
 
             if (error){
