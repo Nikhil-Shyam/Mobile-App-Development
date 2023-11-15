@@ -471,6 +471,12 @@ public class MainActivity extends AppCompatActivity {
                             error = true;
                     }
                 }
+                for (int i = 1; i < input.length()-1; i++){
+                    for (int j = 0; j < nums.length; j++){
+                        if (input.charAt(i) == nums[j] && input.charAt(i+1) == 'x' && input.charAt(i-1) == '^')
+                            error = true;
+                    }
+                }
             }
         }
     }
