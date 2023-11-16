@@ -126,13 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 addText(carrot);
             else if (view.getId() == R.id.variable)
                 addText(variable);
-            else if (view.getId() == R.id.clear) {
+            else if (view.getId() == R.id.clear)
                 inp.setText("");
-            }
             else if (view.getId() == R.id.delete) {
-                if (inp.length() == 0) {
+                if (inp.length() == 0) 
                     inp.setText("ERROR");
-                }
                 if (!inp.getText().toString().equals("ERROR"))
                     inp.setText(inp.getText().toString().substring(0, inp.getText().length() - 1));
             }
@@ -164,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             if (error){
                 inp.setText("ERROR");
             }else{
+                // try-catch for big numbers
                 try{
                     // breaking inp into terms (add/sub/multi) and adding to arraylist
                     StringTokenizer st3 = new StringTokenizer(input, "+-*");
