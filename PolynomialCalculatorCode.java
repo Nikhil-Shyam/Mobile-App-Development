@@ -160,53 +160,55 @@ public class MainActivity extends AppCompatActivity {
             if (error){
                 inp.setText("ERROR");
             }else{
-                // breaking inp into terms (add/sub/multi) and adding to arraylist
-                StringTokenizer st3 = new StringTokenizer(input, "+-*");
-                while (st3.hasMoreTokens()){
-                    exponents.add(st3.nextToken());
-                }
-
-                exponents();
-
-                // breaking inp into terms (add/sub) and adding to arraylist
-                StringTokenizer st1 = new StringTokenizer(multiplyInput, "+-");
-                while (st1.hasMoreTokens()){
-                    addSubTerms.add(st1.nextToken());
-                }
-
-                multiply();
-
-                // determining signs
-                determineAddSubSigns();
-
-                // putting back into a string for addition/subtraction
-                addSubString();
-
-                // breaking up addition and subtraction
-                addSubTerms = new ArrayList<String>();
-                StringTokenizer st2 = new StringTokenizer(addSubInput, "+-");
-                signCounter = 0;
-
-                while(st2.hasMoreTokens()){
-                    addSubTerms.add(st2.nextToken());
-                }
-
-                addSubTermSigns();
-
-                // addition and subtraction
-                additionAndSubtraction();
-
-                descendingOrder();
-
-                for(int i = 0; i < outputArray.size(); i++)
-                    output += outputArray.get(i);
-
-                if (output.length() == 0)
-                    output = "0";
-                else if (output.charAt(0) == '+')
-                    output = output.substring(1);
-
-                inp.setText(output);
+                try{
+                    // breaking inp into terms (add/sub/multi) and adding to arraylist
+                    StringTokenizer st3 = new StringTokenizer(input, "+-*");
+                    while (st3.hasMoreTokens()){
+                        exponents.add(st3.nextToken());
+                    }
+    
+                    exponents();
+    
+                    // breaking inp into terms (add/sub) and adding to arraylist
+                    StringTokenizer st1 = new StringTokenizer(multiplyInput, "+-");
+                    while (st1.hasMoreTokens()){
+                        addSubTerms.add(st1.nextToken());
+                    }
+    
+                    multiply();
+    
+                    // determining signs
+                    determineAddSubSigns();
+    
+                    // putting back into a string for addition/subtraction
+                    addSubString();
+    
+                    // breaking up addition and subtraction
+                    addSubTerms = new ArrayList<String>();
+                    StringTokenizer st2 = new StringTokenizer(addSubInput, "+-");
+                    signCounter = 0;
+    
+                    while(st2.hasMoreTokens()){
+                        addSubTerms.add(st2.nextToken());
+                    }
+    
+                    addSubTermSigns();
+    
+                    // addition and subtraction
+                    additionAndSubtraction();
+    
+                    descendingOrder();
+    
+                    for(int i = 0; i < outputArray.size(); i++)
+                        output += outputArray.get(i);
+    
+                    if (output.length() == 0)
+                        output = "0";
+                    else if (output.charAt(0) == '+')
+                        output = output.substring(1);
+    
+                    inp.setText(output);
+                }catch (NumberFormatException e){ inp.setText("ERROR"); }
             }
         }
 
