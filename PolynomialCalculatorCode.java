@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             else if (view.getId() == R.id.clear)
                 inp.setText("");
             else if (view.getId() == R.id.delete) {
-                if (inp.length() == 0) 
+                if (inp.length() == 0)
                     inp.setText("ERROR");
                 if (!inp.getText().toString().equals("ERROR"))
                     inp.setText(inp.getText().toString().substring(0, inp.getText().length() - 1));
@@ -458,11 +458,11 @@ public class MainActivity extends AppCompatActivity {
                         error = true;
                 }
                 if (temp == '-'){
-                    if (input.charAt(i+1) == '+')
+                    if (input.charAt(i+1) == '+' || input.charAt(i+1) == '*')
                         error = true;
                 }
                 if (temp == '+'){
-                    if (input.charAt(i+1) == '-')
+                    if (input.charAt(i+1) == '-' || input.charAt(i+1) == '*')
                         error = true;
                 }
                 if (i == 0){
