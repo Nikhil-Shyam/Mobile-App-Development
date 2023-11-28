@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // this doesn't work
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) button.getLayoutParams();
                 params.width = (int)(145 * getResources().getDisplayMetrics().scaledDensity) + progress*3;
                 params.height = (int)(50 * getResources().getDisplayMetrics().scaledDensity) + progress*3;
