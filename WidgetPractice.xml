@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Switch
+        android:id="@+id/switchSeekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:textColor="#949494"
+        android:text="OFF" />
+
+    <TextView
+        android:id="@+id/textViewDisplayColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/editTextColor"
+        android:layout_alignBottom="@id/editTextColor"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="19sp"
+        android:textColor="#000000"
+        android:text="Display Color" />
+
+    <EditText
+        android:id="@+id/editTextColor"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:layout_below="@id/switchSeekBar"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="70dp"
+        android:textColor="#000000"
+        android:text="Color" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/editTextColor"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#bebebe"
+        android:textColor="#000000"
+        android:text="TEST BUTTON" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/button"
+        android:layout_marginTop="10dp"
+        android:thumbTint="#bebebe"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
