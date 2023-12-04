@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="1" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/switch1"
+        android:layout_below="@id/switch1"
+        android:layout_marginTop="5dp"
+        android:text="2" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/switch1"
+        android:layout_below="@id/switch2"
+        android:layout_marginTop="5dp"
+        android:text="3" />
+
+    <TextView
+        android:id="@+id/textViewColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/switch3"
+        android:layout_marginTop="40dp"
+        android:textSize="16dp"
+        android:text="Color" />
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddress"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter email for verification"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewColor"
+        android:layout_marginTop="20dp"
+        android:inputType="textEmailAddress" />
+
+    <Button
+        android:id="@+id/verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/editTextTextEmailAddress"
+        android:layout_marginTop="20dp"
+        android:text="Verify" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/verify"
+        android:layout_marginTop="20dp"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
