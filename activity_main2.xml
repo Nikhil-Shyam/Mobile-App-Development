@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Volume Control" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupVolume"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewVolume"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radioButton25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25%" />
+
+        <RadioButton
+            android:id="@+id/radioButton50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50%" />
+
+        <RadioButton
+            android:id="@+id/radioButton75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="75%" />
+
+        <RadioButton
+            android:id="@+id/radioButton100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100%" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewRPS"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/radioGroupVolume"
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rock Paper Scissor" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupRPS"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_below="@id/textViewRPS"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radioButtonRock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rock" />
+
+        <RadioButton
+            android:id="@+id/radioButtonPaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paper" />
+
+        <RadioButton
+            android:id="@+id/radioButtonScissor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scissor" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewVS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewRPS"
+        android:layout_marginTop="79dp"
+        android:textSize="20sp"
+        android:text="VS" />
+
+    <ImageView
+        android:id="@+id/imageViewRPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewRPS"
+        android:layout_toRightOf="@id/textViewVS"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="45dp"
+        app:srcCompat="@drawable/select" />
+
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/radioGroupRPS"
+        android:layout_marginTop="50dp"
+        android:text="Play!" />
+
+    <TextView
+        android:id="@+id/textViewSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/buttonPlay"
+        android:layout_marginTop="5dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textViewScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewSelection"
+        android:layout_marginTop="5dp"
+        android:text="Score" />
+</RelativeLayout>
