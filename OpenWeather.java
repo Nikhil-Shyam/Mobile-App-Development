@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
+            // string sent is zipcode (editText) text
             public void onClick(View v) {
                 new AsyncThread().execute(zipcode.getText().toString());
             }
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... voids) {
             try{
-                Log.d("voids", voids[0]);
+                // string used is voids[0]
                 url1 = new URL("https://api.openweathermap.org/geo/1.0/zip?zip=" + voids[0] + ",US&appid=cfcdedfa1e43c6123cff4f3374adb61a");
                 urlConnection1 = url1.openConnection();
                 inputStream1 = urlConnection1.getInputStream();
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 String lat = geoWeather.get("lat").toString();
                 String lon = geoWeather.get("lon").toString();
 
-                url2 = new URL("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=cfcdedfa1e43c6123cff4f3374adb61a");
+                url2 = new URL("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=cfcdedfa1e43c6123cff4f3374adb61a&units=imperial");
                 urlConnection2 = url2.openConnection();
                 inputStream2 = urlConnection2.getInputStream();
                 bufferedReader2 = new BufferedReader(new InputStreamReader(inputStream2));
@@ -78,14 +79,24 @@ public class MainActivity extends AppCompatActivity {
                 while ((st2 = bufferedReader2.readLine()) != null)
                     fiveDayInfo += st2;
 
-                JSONArray fiveDayWeather = new JSONArray(fiveDayInfo);
-            }catch(IOException | JSONException e){}
+                JSONObject fiveDayWeather = new JSONObject(fiveDayInfo);
 
+                Log.d("temp max", fiveDayWeather.getJSONArray("list").getJSONObject(0).getJSONObject("main").get("temp_max").toString());
+                Log.d("temp max", fiveDayWeather.getJSONArray("list").getJSONObject(0).getJSONObject("main").get("temp_min").toString());
+                Log.d("temp", fiveDayWeather.getJSONArray("list").getJSONObject(0).getJSONObject("main").get("temp").toString());
+                Log.d("desc", fiveDayWeather.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).get("description").toString());
+                Log.d("date", fiveDayWeather.getJSONArray("list").getJSONObject(0).get("dt_txt").toString().substring(5, 10));
+            }catch(IOException | JSONException e){}
             // This is where you will download your data.
             // You will need to override another method to update the UI
             Log.d("5day", fiveDayInfo);
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
         }
     }
 }
